@@ -37,6 +37,7 @@ import errno
 import shutil
 import subprocess
 import xvfbwrapper
+import manpa_selenium_client import ManpaSeleniumClient
 
 
 __author__ = "fpemud@sina.com (Fpemud)"
@@ -57,10 +58,11 @@ function list:
 
 class ManPa:
 
-    def __init__(self, width=1280, height=720, videoLogFile=None):
+    def __init__(self, width=1280, height=720, downloadDir=None, videoLogFile=None):
         self.width = width
         self.height = height
         self.colordepth = 24
+        self.downloadDir = None
         self.videoLogFile = videoLogFile
 
         self.xvfb = xvfbwrapper.Xvfb(self.width, self.height, self.colordepth)
@@ -109,9 +111,9 @@ class ManPa:
     def __exit__(self, type, value, traceback):
         self.dispose()
 
-    def openHttpClient(self):
+    def open_http_client(self):
         return
 
-    def openSeleniumClient(self):
+    def open_selenium_client(self):
         return
 

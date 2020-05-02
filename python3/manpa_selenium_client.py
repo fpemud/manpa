@@ -5,15 +5,18 @@ import os
 import sys
 import time
 import subprocess
-import fake-useragent
+import fake_useragent
 from selenium import webdriver
 
 
-class SeleniumClient:
+class ManpaSeleniumClient:
 
     def __init__(self, downloadDir=None):
-        self.downloadDir = os.getcwd() if downloadDir is None else downloadDir
+        self.downloadDir = downloadDir
+        self.driver = None
 
+        # select User-Agent
+        ua = None
         try:
             dbPath = "/usr/share/fake-useragent-db/fake_useragent_db.json"
             if os.path.exists(dbPath):
@@ -22,28 +25,38 @@ class SeleniumClient:
             else:
                 ua = fake_useragent.UserAgent().random
         except fake_useragent.errors.FakeUserAgentError:
-            ua = None
+            pass
 
-        options = selenium.webdriver.chrome.options.Options()
-        options.add_argument('--no-sandbox')                    # FIXME
-        if ua is not None:
-            options.add_argument('user-agent=' + ua)
-        # options.add_argument('--proxy-server=http://ip:port')
-        options.add_experimental_option("prefs", {
-            "download.default_directory": self.downloadDir,
-            "download.prompt_for_download": False,
-            "download.directory_upgrade": True,
-            "safebrowsing.enabled": False,
-            "safebrowsing.disable_download_protection": True,
-        })
+        # select google-chrome options
+        options = []
+        if True:
+            options = selenium.webdriver.chrome.options.Options()
+            options.add_argument('--no-sandbox')                    # FIXME
+            if ua is not None:
+                options.add_argument('user-agent=' + ua)
+            # options.add_argument('--proxy-server=http://ip:port')
+
+        # select google-chrome preferences
+        prefs = dict()
+        if True:
+            if downloadDir is not None:
+                prefs.update({
+                    "download.default_directory": self.downloadDir,
+                    "download.prompt_for_download": False,
+                    "download.directory_upgrade": True,
+                    "safebrowsing.enabled": False,
+                    "safebrowsing.disable_download_protection": True,
+                })
+
+        # create webdriver object
+        options.add_experimental_option("prefs", prefs)
         self.driver = selenium.webdriver.Chrome(options=options)
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, traceback):
-        self.driver.quit()
-        self.driver = None
+    def quit(self):
+        if self.driver is not None:
+            self.driver.quit()
+            self.driver = None
+        self.downloadDir = None
 
     def scrollToPageEnd(self):
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
