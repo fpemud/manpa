@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
-# extractor.py - crawl slowly
+# manpa_doctempl.py - 
 #
 # Copyright (c) 2019-2020 Fpemud <fpemud@sina.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
+# of this software and associated DocTemplation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
@@ -24,27 +24,27 @@
 # THE SOFTWARE.
 
 
-class DocumentLogin:
+class DocTemplLogin:
     pass
 
 
-class DocumentSingleEntity:
+class DocTemplSingleEntity:
     pass
 
 
-class DocumentSingleEntityWithDetail:
+class DocTemplSingleEntityWithDetail:
     pass
 
 
-class DocumentEntityList:
+class DocTemplEntityList:
     pass
 
 
-class DocumentEntityListWithDetail:
+class DocTemplEntityListWithDetail:
     pass
 
 
-class DocumentDownload:
+class DocTemplDownload:
     pass
 
 

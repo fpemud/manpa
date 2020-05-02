@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
+# manpa.py - 
+#
 # Copyright (c) 2019-2020 Fpemud <fpemud@sina.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -69,6 +71,9 @@ class ManPa:
         self.downloadDir = downloadDir if downloadDir is not None else os.getcwd()
         self.videoLogFile = videoLogFile
 
+        self.httpClientList = []
+        self.seleniumClientList = []
+
         self.xvfb = xvfbwrapper.Xvfb(self.width, self.height, self.colordepth)
         self.xvfb.start()
 
@@ -92,7 +97,7 @@ class ManPa:
         self.dispose()
 
     def open_http_client(self):
-        return
+        return None
 
     def open_selenium_client(self):
-        return ManpaSeleniumClient(self.downloadDir)
+        return ManpaSeleniumClient(self, self.downloadDir)
