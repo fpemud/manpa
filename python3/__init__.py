@@ -31,3 +31,5 @@ manpa - crawl slowly
 
 __author__ = "fpemud@sina.com (Fpemud)"
 __version__ = "0.0.1"
+
+from manpa import ManPa

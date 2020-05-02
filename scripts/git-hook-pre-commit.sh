@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILES="python3/manpa.py"
+FILES="python3/*.py"
 ERRFLAG=0
 
 OUTPUT=`pyflakes "${FILES}" 2>&1`
