@@ -7,25 +7,23 @@ import time
 import subprocess
 import fake_useragent
 from selenium import webdriver
+from manpa_util import ManpaUtil
 
 
-class ManpaSeleniumClient:
+"""
+ManpaSeleniumWebDriver is similar but not compatible with Selenium WebDriver.
+You can always get the WebDriver object by .driver property.
+"""
 
-    def __init__(self, downloadDir=None):
+
+class ManpaSeleniumWebDriver:
+
+    def __init__(self, downloadDir):
         self.downloadDir = downloadDir
         self.driver = None
 
         # select User-Agent
-        ua = None
-        try:
-            dbPath = "/usr/share/fake-useragent-db/fake_useragent_db.json"
-            if os.path.exists(dbPath):
-                # we don't want fake_useragent access internet
-                ua = fake_useragent.UserAgent(path=dbPath).random
-            else:
-                ua = fake_useragent.UserAgent().random
-        except fake_useragent.errors.FakeUserAgentError:
-            pass
+        ua = ManpaUtil.getRandomUserAgent()
 
         # select google-chrome options
         options = []
@@ -39,14 +37,14 @@ class ManpaSeleniumClient:
         # select google-chrome preferences
         prefs = dict()
         if True:
-            if downloadDir is not None:
-                prefs.update({
-                    "download.default_directory": self.downloadDir,
-                    "download.prompt_for_download": False,
-                    "download.directory_upgrade": True,
-                    "safebrowsing.enabled": False,
-                    "safebrowsing.disable_download_protection": True,
-                })
+            # enable download capabilities
+            prefs.update({
+                "download.default_directory": self.downloadDir,
+                "download.prompt_for_download": False,
+                "download.directory_upgrade": True,
+                "safebrowsing.enabled": False,
+                "safebrowsing.disable_download_protection": True,
+            })
 
         # create webdriver object
         options.add_experimental_option("prefs", prefs)
@@ -57,6 +55,10 @@ class ManpaSeleniumClient:
             self.driver.quit()
             self.driver = None
         self.downloadDir = None
+
+    def 
+
+
 
     def scrollToPageEnd(self):
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")

@@ -37,7 +37,8 @@ import errno
 import shutil
 import subprocess
 import xvfbwrapper
-import manpa_selenium_client import ManpaSeleniumClient
+from manpa_util import ManpaUtil
+from manpa_selenium_client import ManpaSeleniumClient
 
 
 __author__ = "fpemud@sina.com (Fpemud)"
@@ -58,11 +59,14 @@ function list:
 
 class ManPa:
 
-    def __init__(self, width=1280, height=720, downloadDir=None, videoLogFile=None):
-        self.width = width
-        self.height = height
+    DEFAULT_WIDTH = 1280
+    DEFAULT_HEIGHT = 720
+
+    def __init__(self, width=None, height=None, downloadDir=None, videoLogFile=None):
+        self.width = width if width is not None else self.DEFAULT_WIDTH
+        self.height = height if height is not None else self.DEFAULT_HEIGHT
         self.colordepth = 24
-        self.downloadDir = None
+        self.downloadDir = downloadDir if downloadDir is not None else os.getcwd()
         self.videoLogFile = videoLogFile
 
         self.xvfb = xvfbwrapper.Xvfb(self.width, self.height, self.colordepth)
@@ -70,31 +74,7 @@ class ManPa:
 
         self.videoRecordProc = None
         if self.videoLog is not None:
-            cmd = [
-                "/usr/bin/ffmpeg",
-                "-f",
-                "x11grab",
-                "-s",
-                "%dx%d" % (self.width, self.height),
-                "-r",
-                "%d" % (self.colordepth),
-                "-i",
-                ":%d+nomouse" % (xvfb.vdisplay_num),
-                "-c:v",
-                "libx264",
-                "-preset",
-                "superfast",
-                "-pix_fmt",
-                "yuv420p",
-                "-s",
-                "%dx%d" % (self.width, self.height),
-                "-threads",
-                "0",
-                "-f",
-                "flv",
-                self.videoLogFile
-            ]
-            self.videoRecordProc = subprocess.Popen(cmd)
+            self.videoRecordProc = ManpaUtil.createVideoRecordProcess(self.videoLogFile)
 
     def dispose(self):
         if self.videoRecordProc is not None:
@@ -115,5 +95,4 @@ class ManPa:
         return
 
     def open_selenium_client(self):
-        return
-
+        return ManpaSeleniumClient(self.downloadDir)
