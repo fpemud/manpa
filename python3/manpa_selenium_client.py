@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
-# manpa_selenium_client.py - 
+# manpa_selenium_client.py -
 #
 # Copyright (c) 2019-2020 Fpemud <fpemud@sina.com>
 #
@@ -24,12 +24,9 @@
 # THE SOFTWARE.
 
 
-import os
-import sys
 import time
 import random
 import selenium
-import subprocess
 from manpa_util import ManpaUtil
 
 
@@ -96,7 +93,31 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
         self.click()
         time.sleep(random.randrange(5, 10))
 
+    def retrieve_download_information(self, elem):
+        # return (url, filename)
+
+        # goto download manager page
+        super().get("chrome://downloads/")
+        while self.execute_script("return %s" % (self._downloadManagerSelector())) is None:
+            time.sleep(1)
+        while self.execute_script("return %s" % (self._downloadFileSelector())) is None:
+            time.sleep(1)
+
+        # get information
+        url = self.execute_script("return %s.shadowRoot.querySelector('div#content  #file-link').href" % (self._downloadFileSelector()))
+        filename = self.execute_script("return %s.shadowRoot.querySelector('div#content  #file-link').text" % (self._downloadFileSelector()))
+
+        # cancel download
+        self.execute_script("%s.shadowRoot.querySelector('cr-button[focus-type=\"cancel\"]').click()" % (self._downloadFileSelector()))
+
+        return (url, filename)
+
     def mark_element(self, elem_list):
         # FIXME
         return
 
+    def _downloadManagerSelector(self):
+        return "document.querySelector('downloads-manager')"
+
+    def _downloadFileSelector(self):
+        return "%s.shadowRoot.querySelector('#downloadsList downloads-item')" % (self._downloadManagerSelector())

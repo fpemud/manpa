@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
-# manpa_util.py - 
+# manpa_util.py -
 #
 # Copyright (c) 2019-2020 Fpemud <fpemud@sina.com>
 #
@@ -25,6 +25,7 @@
 
 
 import os
+import subprocess
 import fake_useragent
 
 
@@ -43,17 +44,17 @@ class ManpaUtil:
             return None
 
     @staticmethod
-    def createVideoRecordProcess(self, outputFile):
+    def createVideoRecordProcess(self, width, height, colordepth, displayNumber, outputFile):
         cmd = [
             "/usr/bin/ffmpeg",
             "-f",
             "x11grab",
             "-s",
-            "%dx%d" % (self.width, self.height),
+            "%dx%d" % (width, height),
             "-r",
-            "%d" % (self.colordepth),
+            "%d" % (colordepth),
             "-i",
-            ":%d+nomouse" % (xvfb.vdisplay_num),
+            ":%d+nomouse" % (displayNumber),
             "-c:v",
             "libx264",
             "-preset",
@@ -61,11 +62,11 @@ class ManpaUtil:
             "-pix_fmt",
             "yuv420p",
             "-s",
-            "%dx%d" % (self.width, self.height),
+            "%dx%d" % (width, height),
             "-threads",
             "0",
             "-f",
             "flv",
-            self.videoLogFile
+            outputFile,
         ]
         return subprocess.Popen(cmd)

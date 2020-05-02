@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
-# manpa_doctempl.py - 
+# manpa_doctempl.py -
 #
 # Copyright (c) 2019-2020 Fpemud <fpemud@sina.com>
 #

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
-# manpa.py - 
+# manpa.py -
 #
 # Copyright (c) 2019-2020 Fpemud <fpemud@sina.com>
 #
@@ -32,12 +32,6 @@ manpa
 """
 
 import os
-import re
-import time
-import fcntl
-import errno
-import shutil
-import subprocess
 import xvfbwrapper
 from manpa_util import ManpaUtil
 from manpa_selenium_client import ManpaSeleniumClient
@@ -59,7 +53,7 @@ function list:
 """
 
 
-class ManPa:
+class Manpa:
 
     DEFAULT_WIDTH = 1280
     DEFAULT_HEIGHT = 720
