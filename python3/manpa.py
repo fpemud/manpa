@@ -59,30 +59,35 @@ class Manpa:
     DEFAULT_HEIGHT = 720
 
     def __init__(self, width=None, height=None, downloadDir=None, videoLogFile=None):
-        self.width = width if width is not None else self.DEFAULT_WIDTH
-        self.height = height if height is not None else self.DEFAULT_HEIGHT
-        self.colordepth = 24
-        self.downloadDir = downloadDir if downloadDir is not None else os.getcwd()
-        self.videoLogFile = videoLogFile
+        self._width = width if width is not None else self.DEFAULT_WIDTH
+        self._height = height if height is not None else self.DEFAULT_HEIGHT
+        self._colordepth = 24
+        self._downloadDir = downloadDir if downloadDir is not None else os.getcwd()
+        self._videoLogFile = videoLogFile
 
-        self.httpClientList = []
-        self.seleniumClientList = []
+        self._httpClientList = []
+        self._seleniumClientList = []
 
-        self.xvfb = xvfbwrapper.Xvfb(self.width, self.height, self.colordepth)
-        self.xvfb.start()
+        self._xvfb = xvfbwrapper.Xvfb(self._width, self._height, self._colordepth)
+        self._xvfb.start()
 
-        self.videoRecordProc = None
-        if self.videoLog is not None:
-            self.videoRecordProc = ManpaUtil.createVideoRecordProcess(self.videoLogFile)
+        self._videoRecordProc = None
+        if self._videoLogFile is not None:
+            self._videoRecordProc = ManpaUtil.createVideoRecordProcess(self._videoLogFile)
+
+        self._intercepted = False
 
     def dispose(self):
-        if self.videoRecordProc is not None:
-            self.videoRecordProc.terminate()
-            self.videoRecordProc.wait()
-            self.videoRecordProc = None
-        if self.xvfb is not None:
-            self.xvfb.stop()
-            self.xvfb = None
+        if self._videoRecordProc is not None:
+            self._videoRecordProc.terminate()
+            self._videoRecordProc.wait()
+            self._videoRecordProc = None
+        if self._xvfb is not None:
+            self._xvfb.stop()
+            self._xvfb = None
+
+    def hasBeenIntercepted(self):
+        return self._intercepted
 
     def __enter__(self):
         return self
@@ -94,4 +99,4 @@ class Manpa:
         return None
 
     def open_selenium_client(self):
-        return ManpaSeleniumClient(self, self.downloadDir)
+        return ManpaSeleniumClient(self, self._downloadDir)

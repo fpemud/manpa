@@ -28,6 +28,7 @@ import time
 import random
 import selenium
 from manpa_util import ManpaUtil
+from manpa_excption import InterceptionDetected
 
 
 """
@@ -39,11 +40,9 @@ You can always get the WebDriver object by .driver property.
 class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
     def __init__(self, parent, downloadDir):
-        self.parent = parent
-        self.parent.seleniumClientList.append(self)
-
-        self.downloadDir = downloadDir
-        self.driver = None
+        self._parent = parent
+        self._downloadDir = downloadDir
+        self._parent.seleniumClientList.append(self)
 
         try:
             # select User-Agent
@@ -63,7 +62,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             if True:
                 # enable download capabilities
                 prefs.update({
-                    "download.default_directory": self.downloadDir,
+                    "download.default_directory": self._downloadDir,
                     "download.prompt_for_download": False,
                     "download.directory_upgrade": True,
                     "safebrowsing.enabled": False,
@@ -80,18 +79,22 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
     def quit(self):
         super().quit()
         if True:
-            self.downloadDir = None
+            self._downloadDir = None
         if True:
-            self.parent.seleniumClientList.remove(self)
-            self.parent = None
+            self._parent.seleniumClientList.remove(self)
+            self._parent = None
 
     def get(self, url):
         super().get(url)
         time.sleep(random.randrange(5, 10))
 
     def click_and_wait(self, elem):
-        self.click()
-        time.sleep(random.randrange(5, 10))
+        try:
+            self.click()
+            time.sleep(random.randrange(5, 10))
+        except selenium.common.exceptions.ElementClickInterceptedException:
+            self._parent.intercepted = True
+            raise InterceptionDetected()
 
     def retrieve_download_information(self, elem):
         # return (url, filename)
