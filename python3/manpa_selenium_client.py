@@ -92,7 +92,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             self._parent.intercepted = True
             raise InterceptionDetected()
 
-    def retrieve_download_information(self, elem):
+    def retrieve_download_information_and_remove_download(self):
         # return (url, filename)
 
         downloadManagerSelector = "document.querySelector('downloads-manager')"
