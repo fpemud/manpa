@@ -43,6 +43,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
     def __init__(self, parent):
         self._parent = parent
         self._parent._seleniumClientList.append(self)
+        self._seleniumInited = False                    # no built-in way to check whether base class is initialized
 
         try:
             # select User-Agent
@@ -72,14 +73,18 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             # create webdriver object
             options.add_experimental_option("prefs", prefs)
             super(selenium.webdriver.Chrome, self).__init__(options=options)
+            self._seleniumInited = True
         except Exception:
             self.quit()
             raise
 
     def quit(self):
-        super(selenium.webdriver.Chrome, self).quit()
-        self._parent._seleniumClientList.remove(self)
-        self._parent = None
+        if self._seleniumInited:
+            super(selenium.webdriver.Chrome, self).quit()
+            self._seleniumInited = False
+        if True:
+            self._parent._seleniumClientList.remove(self)
+            self._parent = None
 
     def get_and_wait(self, url):
         self.get(url)
