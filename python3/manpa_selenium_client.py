@@ -39,9 +39,8 @@ You can always get the WebDriver object by .driver property.
 
 class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
-    def __init__(self, parent, downloadDir):
+    def __init__(self, parent):
         self._parent = parent
-        self._downloadDir = downloadDir
         self._parent.seleniumClientList.append(self)
 
         try:
@@ -62,7 +61,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             if True:
                 # enable download capabilities
                 prefs.update({
-                    "download.default_directory": self._downloadDir,
+                    "download.default_directory": self.parent._downloadDir,
                     "download.prompt_for_download": False,
                     "download.directory_upgrade": True,
                     "safebrowsing.enabled": False,
@@ -78,11 +77,8 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
     def quit(self):
         super().quit()
-        if True:
-            self._downloadDir = None
-        if True:
-            self._parent.seleniumClientList.remove(self)
-            self._parent = None
+        self._parent.seleniumClientList.remove(self)
+        self._parent = None
 
     def get_and_wait(self, url):
         self.get(url)

@@ -109,4 +109,4 @@ class Manpa:
         return None
 
     def open_selenium_client(self):
-        return ManpaSeleniumClient(self, self._downloadDir)
+        return ManpaSeleniumClient(self)
