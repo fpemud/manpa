@@ -133,3 +133,9 @@ class ManpaSeleniumWebDriver:
 
     def __getattr__(self, attr):
         return getattr(self._driver, attr)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.quit()
