@@ -27,6 +27,7 @@
 import time
 import random
 import selenium
+import selenium.webdriver
 from manpa.manpa_util import ManpaUtil
 from manpa.manpa_exception import InterceptionDetectedException
 
