@@ -24,18 +24,6 @@
 # THE SOFTWARE.
 
 
-__all__ = [
-    "DocTemplLogin",
-    "DocTemplSingleEntity",
-    "DocTemplSingleEntityWithDetail",
-    "DocTemplEntityList",
-    "DocTemplEntityListWithDetail",
-    "DocTemplDownload",
-    "MultiFrameNaviMenuMain",
-    "MultiFrameNaviMain",
-]
-
-
 class DocTemplLogin:
     pass
 

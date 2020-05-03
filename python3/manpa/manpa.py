@@ -35,7 +35,7 @@ import shutil
 import tempfile
 import xvfbwrapper
 from .manpa_util import ManpaUtil
-from .manpa_selenium_client import ManpaSeleniumClient
+from .manpa_selenium_client import ManpaSeleniumWebDriver
 
 
 __author__ = "fpemud@sina.com (Fpemud)"
@@ -120,4 +120,4 @@ class Manpa:
         return None
 
     def open_selenium_client(self):
-        return ManpaSeleniumClient(self)
+        return ManpaSeleniumWebDriver(self)
