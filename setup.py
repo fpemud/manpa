@@ -10,8 +10,8 @@ except:
     from distutils.core import setup
 
 # check Python's version
-if sys.version_info < (3, 2):
-    sys.stderr.write('This module requires at least Python 3.2\n')
+if sys.version_info < (3, 6):
+    sys.stderr.write('This module requires at least Python 3.6\n')
     sys.exit(1)
 
 # check linux platform
@@ -28,9 +28,9 @@ classif = [
     'Natural Language :: English',
     'Operating System :: POSIX :: Linux',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 3.3',
-    'Programming Language :: Python :: 3.4',
-    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
     'Topic :: Software Development :: Libraries :: Python Modules',
 ]
 
@@ -46,6 +46,6 @@ setup(
     classifiers=classif,
     url='http://github.com/fpemud/manpa',
     download_url='',
-    py_modules=['manpa'],
-    package_dir={'': 'python3'},
+    packages=['manpa'],
+    package_dir={'manpa': 'python3/manpa'},
 )
