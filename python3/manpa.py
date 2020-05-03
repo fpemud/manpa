@@ -58,26 +58,30 @@ class Manpa:
     DEFAULT_WIDTH = 1280
     DEFAULT_HEIGHT = 720
 
-    def __init__(self, width=None, height=None, downloadDir=None, videoLogFile=None):
+    def __init__(self, width=None, height=None, downloadDir=None, videoLogFile=None, isDebug=False):
         self._width = width if width is not None else self.DEFAULT_WIDTH
         self._height = height if height is not None else self.DEFAULT_HEIGHT
         self._colordepth = 24
         self._downloadDir = downloadDir if downloadDir is not None else os.getcwd()
         self._videoLogFile = videoLogFile
+        self._isDebug = isDebug
 
-        self._httpClientList = []
-        self._seleniumClientList = []
-
-        self._xvfb = xvfbwrapper.Xvfb(self._width, self._height, self._colordepth)
-        self._xvfb.start()
-
+        self._xvfb = None
         self._videoRecordProc = None
-        if self._videoLogFile is not None:
-            self._videoRecordProc = ManpaUtil.createVideoRecordProcess(self._videoLogFile)
+        if isDebug:
+            self._xvfb = xvfbwrapper.Xvfb(self._width, self._height, self._colordepth)
+            self._xvfb.start()
+            if self._videoLogFile is not None:
+                self._videoRecordProc = ManpaUtil.createVideoRecordProcess(self._videoLogFile)
 
-        self._intercepted = False
+        self._httpClientList = []       # can be modified by client object
+        self._seleniumClientList = []   # can be modified by client object
+        self._intercepted = False       # can be modified by client object
 
     def dispose(self):
+        self._intercepted = None
+        self._seleniumClientList = None
+        self._httpClientList = None
         if self._videoRecordProc is not None:
             self._videoRecordProc.terminate()
             self._videoRecordProc.wait()
@@ -85,6 +89,12 @@ class Manpa:
         if self._xvfb is not None:
             self._xvfb.stop()
             self._xvfb = None
+        self._isDebug = None
+        self._videoLogFile = None
+        self._downloadDir = None
+        self._colordepth = None
+        self._height = None
+        self._width = None
 
     def hasBeenIntercepted(self):
         return self._intercepted

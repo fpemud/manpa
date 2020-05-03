@@ -84,8 +84,8 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             self._parent.seleniumClientList.remove(self)
             self._parent = None
 
-    def get(self, url):
-        super().get(url)
+    def get_and_wait(self, url):
+        self.get(url)
         time.sleep(random.randrange(5, 10))
 
     def click_and_wait(self, elem):
@@ -99,28 +99,29 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
     def retrieve_download_information(self, elem):
         # return (url, filename)
 
-        # goto download manager page
-        super().get("chrome://downloads/")
-        while self.execute_script("return %s" % (self._downloadManagerSelector())) is None:
+        downloadManagerSelector = "document.querySelector('downloads-manager')"
+        downloadFileSelector = "%s.shadowRoot.querySelector('#downloadsList downloads-item')" % (downloadManagerSelector)
+
+        # open new tab as download manager
+        self.execute_script("window.open()")
+        tabs = self.get_window_handles()
+        self.switch_to.window(tabs[-1])
+        self.get("chrome://downloads/")
+        while self.execute_script("return %s" % (downloadManagerSelector)) is None:
             time.sleep(1)
-        while self.execute_script("return %s" % (self._downloadFileSelector())) is None:
+        while self.execute_script("return %s" % (downloadFileSelector)) is None:
             time.sleep(1)
 
         # get information
-        url = self.execute_script("return %s.shadowRoot.querySelector('div#content  #file-link').href" % (self._downloadFileSelector()))
-        filename = self.execute_script("return %s.shadowRoot.querySelector('div#content  #file-link').text" % (self._downloadFileSelector()))
+        url = self.execute_script("return %s.shadowRoot.querySelector('div#content  #file-link').href" % (downloadFileSelector))
+        filename = self.execute_script("return %s.shadowRoot.querySelector('div#content  #file-link').text" % (downloadFileSelector))
 
-        # cancel download
-        self.execute_script("%s.shadowRoot.querySelector('cr-button[focus-type=\"cancel\"]').click()" % (self._downloadFileSelector()))
+        # cancel download, delete download item, close tab
+        self.execute_script("%s.shadowRoot.querySelector('cr-button[focus-type=\"cancel\"]').click()" % (downloadFileSelector))
+        self.close()
 
         return (url, filename)
 
     def mark_element(self, elem_list):
         # FIXME
         return
-
-    def _downloadManagerSelector(self):
-        return "document.querySelector('downloads-manager')"
-
-    def _downloadFileSelector(self):
-        return "%s.shadowRoot.querySelector('#downloadsList downloads-item')" % (self._downloadManagerSelector())
