@@ -76,7 +76,7 @@ class Manpa:
 
         self._xvfb = None
         self._videoRecordProc = None
-        if self._isDebug:
+        if not self._isDebug:
             self._xvfb = xvfbwrapper.Xvfb(self._width, self._height, self._colordepth)
             self._xvfb.start()
             if self._videoLogFile is not None:

@@ -33,18 +33,18 @@ from manpa.manpa_exception import InterceptionDetectedException
 
 
 """
-ManpaSeleniumWebDriver is similar but not compatible with Selenium WebDriver.
+ManpaSeleniumWebDriver inherits from selenium.webdriver.Chrome.
 You can always get the WebDriver object by .driver property.
 """
 
 
-class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
+class ManpaSeleniumWebDriver:
 
     def __init__(self, parent):
         self._parent = parent
         self._parent._seleniumClientList.append(self)
-        self._seleniumInited = False                    # no built-in way to check whether base class is initialized
 
+        self._driver = None
         try:
             # select User-Agent
             ua = ManpaUtil.getRandomUserAgent()
@@ -72,22 +72,21 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
             # create webdriver object
             options.add_experimental_option("prefs", prefs)
-            super(selenium.webdriver.Chrome, self).__init__(options=options)
-            self._seleniumInited = True
+            self._driver = selenium.webdriver.Chrome(options=options)
         except Exception:
             self.quit()
             raise
 
     def quit(self):
-        if self._seleniumInited:
-            super(selenium.webdriver.Chrome, self).quit()
-            self._seleniumInited = False
+        if self._driver is not None:
+            self._driver.quit()
+            self._driver = None
         if True:
             self._parent._seleniumClientList.remove(self)
             self._parent = None
 
     def get_and_wait(self, url):
-        self.get(url)
+        self._driver.get(url)
         time.sleep(random.randrange(5, 10))
 
     def click_and_wait(self, elem):
@@ -100,14 +99,14 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
     def retrieve_download_information_and_remove_download(self):
         # return (url, filename)
+        # webdriver.find_element is not valid here because download page uses shadow DOM
 
         downloadManagerSelector = "document.querySelector('downloads-manager')"
         downloadFileSelector = "%s.shadowRoot.querySelector('#downloadsList downloads-item')" % (downloadManagerSelector)
 
         # open new tab as download manager
         self.execute_script("window.open()")
-        tabs = self.get_window_handles()
-        self.switch_to.window(tabs[-1])
+        self.switch_to.window(self.window_handles[-1])
         self.get("chrome://downloads/")
         while self.execute_script("return %s" % (downloadManagerSelector)) is None:
             time.sleep(1)
@@ -120,6 +119,9 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
         # cancel download, delete download item, close tab
         self.execute_script("%s.shadowRoot.querySelector('cr-button[focus-type=\"cancel\"]').click()" % (downloadFileSelector))
+        time.sleep(1)
+        self.execute_script("%s.shadowRoot.querySelector('cr-icon-button[id=\"remove\"]').click()" % (downloadFileSelector))
+        time.sleep(1)
         self.close()
 
         return (url, filename)
@@ -127,3 +129,6 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
     def mark_element(self, elem_list):
         # FIXME
         return
+
+    def __getattr__(self, attr):
+        return getattr(self._driver, attr)
