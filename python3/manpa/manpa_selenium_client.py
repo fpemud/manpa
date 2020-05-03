@@ -42,7 +42,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
     def __init__(self, parent):
         self._parent = parent
-        self._parent.seleniumClientList.append(self)
+        self._parent._seleniumClientList.append(self)
 
         try:
             # select User-Agent
@@ -78,7 +78,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
     def quit(self):
         super().quit()
-        self._parent.seleniumClientList.remove(self)
+        self._parent._seleniumClientList.remove(self)
         self._parent = None
 
     def get_and_wait(self, url):
@@ -90,7 +90,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             self.click()
             time.sleep(random.randrange(5, 10))
         except selenium.common.exceptions.ElementClickInterceptedException:
-            self._parent.intercepted = True
+            self._parent._intercepted = True
             raise InterceptionDetectedException()
 
     def retrieve_download_information_and_remove_download(self):
