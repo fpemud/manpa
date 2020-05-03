@@ -46,13 +46,13 @@ __all__ = [
     'MultiFrameNaviMain',
 ]
 
-from manpa import Manpa
-from manpa_exception import InterceptionDetectedException
-from manpa_doctempl import DocTemplLogin
-from manpa_doctempl import DocTemplSingleEntity
-from manpa_doctempl import DocTemplSingleEntityWithDetail
-from manpa_doctempl import DocTemplEntityList
-from manpa_doctempl import DocTemplEntityListWithDetail
-from manpa_doctempl import DocTemplDownload
-from manpa_doctempl import MultiFrameNaviMain
-from manpa_doctempl import MultiFrameNaviMenuMain
+from .manpa import Manpa
+from .manpa_exception import InterceptionDetectedException
+from .manpa_doctempl import DocTemplLogin
+from .manpa_doctempl import DocTemplSingleEntity
+from .manpa_doctempl import DocTemplSingleEntityWithDetail
+from .manpa_doctempl import DocTemplEntityList
+from .manpa_doctempl import DocTemplEntityListWithDetail
+from .manpa_doctempl import DocTemplDownload
+from .manpa_doctempl import MultiFrameNaviMain
+from .manpa_doctempl import MultiFrameNaviMenuMain
