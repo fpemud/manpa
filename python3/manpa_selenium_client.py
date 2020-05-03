@@ -27,8 +27,8 @@
 import time
 import random
 import selenium
-from manpa_util import ManpaUtil
-from manpa_excption import InterceptionDetectedException
+from .manpa_util import ManpaUtil
+from .manpa_excption import InterceptionDetectedException
 
 
 """

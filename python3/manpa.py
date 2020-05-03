@@ -34,8 +34,8 @@ manpa
 import shutil
 import tempfile
 import xvfbwrapper
-from manpa_util import ManpaUtil
-from manpa_selenium_client import ManpaSeleniumClient
+from .manpa_util import ManpaUtil
+from .manpa_selenium_client import ManpaSeleniumClient
 
 
 __author__ = "fpemud@sina.com (Fpemud)"
