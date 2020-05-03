@@ -28,7 +28,7 @@ import time
 import random
 import selenium
 from manpa_util import ManpaUtil
-from manpa_excption import InterceptionDetected
+from manpa_excption import InterceptionDetectedException
 
 
 """
@@ -90,7 +90,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             time.sleep(random.randrange(5, 10))
         except selenium.common.exceptions.ElementClickInterceptedException:
             self._parent.intercepted = True
-            raise InterceptionDetected()
+            raise InterceptionDetectedException()
 
     def retrieve_download_information_and_remove_download(self):
         # return (url, filename)

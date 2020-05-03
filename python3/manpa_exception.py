@@ -24,5 +24,5 @@
 # THE SOFTWARE.
 
 
-class InterceptionDetected(Exception):
+class InterceptionDetectedException(Exception):
     pass
