@@ -37,6 +37,11 @@ You can always get the WebDriver object by .driver property.
 """
 
 
+__all__ = [
+    "ManpaSeleniumWebDriver",
+]
+
+
 class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
     def __init__(self, parent):

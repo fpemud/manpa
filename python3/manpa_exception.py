@@ -24,5 +24,10 @@
 # THE SOFTWARE.
 
 
+__all__ = [
+    "InterceptionDetectedException",
+]
+
+
 class InterceptionDetectedException(Exception):
     pass

@@ -29,6 +29,11 @@ import subprocess
 import fake_useragent
 
 
+__all__ = [
+    "ManpaUtil",
+]
+
+
 class ManpaUtil:
 
     @staticmethod
