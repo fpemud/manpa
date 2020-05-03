@@ -62,7 +62,7 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
             if True:
                 # enable download capabilities
                 prefs.update({
-                    "download.default_directory": self.parent._downloadDir,
+                    "download.default_directory": self._parent._downloadDir,
                     "download.prompt_for_download": False,
                     "download.directory_upgrade": True,
                     "safebrowsing.enabled": False,
@@ -71,13 +71,13 @@ class ManpaSeleniumWebDriver(selenium.webdriver.Chrome):
 
             # create webdriver object
             options.add_experimental_option("prefs", prefs)
-            super().__init__(options=options)
+            super(selenium.webdriver.Chrome, self).__init__(options=options)
         except Exception:
             self.quit()
             raise
 
     def quit(self):
-        super().quit()
+        super(selenium.webdriver.Chrome, self).quit()
         self._parent._seleniumClientList.remove(self)
         self._parent = None
 

@@ -32,7 +32,7 @@ import fake_useragent
 class ManpaUtil:
 
     @staticmethod
-    def getRandomUserAgent(self):
+    def getRandomUserAgent():
         try:
             dbPath = "/usr/share/fake-useragent-db/fake_useragent_db.json"
             if os.path.exists(dbPath):
@@ -44,7 +44,7 @@ class ManpaUtil:
             return None
 
     @staticmethod
-    def createVideoRecordProcess(self, width, height, colordepth, displayNumber, outputFile):
+    def createVideoRecordProcess(width, height, colordepth, displayNumber, outputFile):
         cmd = [
             "/usr/bin/ffmpeg",
             "-f",
