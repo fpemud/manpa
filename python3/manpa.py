@@ -31,7 +31,8 @@ manpa
 @contact: fpemud@sina.com
 """
 
-import os
+import shutil
+import tempfile
 import xvfbwrapper
 from manpa_util import ManpaUtil
 from manpa_selenium_client import ManpaSeleniumClient
@@ -62,7 +63,14 @@ class Manpa:
         self._width = width if width is not None else self.DEFAULT_WIDTH
         self._height = height if height is not None else self.DEFAULT_HEIGHT
         self._colordepth = 24
-        self._downloadDir = downloadDir if downloadDir is not None else os.getcwd()
+
+        if downloadDir is not None:
+            self._downloadDir = downloadDir
+            self._bTmpDownloadDir = False
+        else:
+            self._downloadDir = tempfile.mkdtemp()
+            self._bTmpDownloadDir = True
+
         self._videoLogFile = videoLogFile
         self._isDebug = isDebug
 
@@ -91,6 +99,9 @@ class Manpa:
             self._xvfb = None
         self._isDebug = None
         self._videoLogFile = None
+        if self._bTmpDownloadDir:
+            shutil.rmtree(self._downloadDir)
+        self._bTmpDownloadDir = None
         self._downloadDir = None
         self._colordepth = None
         self._height = None
