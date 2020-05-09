@@ -91,7 +91,7 @@ class ManpaSeleniumWebDriver:
 
     def click_and_wait(self, elem):
         try:
-            self.click(elem)
+            self._driver.click(elem)
             time.sleep(random.randrange(5, 10))
         except selenium.common.exceptions.ElementClickInterceptedException:
             self._parent._intercepted = True
