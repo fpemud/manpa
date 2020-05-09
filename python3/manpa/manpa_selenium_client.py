@@ -127,7 +127,19 @@ class ManpaSeleniumWebDriver:
         # return result
         return (url, filename)
 
-    def mark_element(self, elem_list):
+    def mark_identified_element(self, element):
+        # FIXME
+        return
+
+    def mark_identified_elements(self, elements):
+        # FIXME
+        return
+
+    def mark_error_element(self, element, message):
+        # FIXME
+        return
+
+    def mark_error_elements(self, elements, message):
         # FIXME
         return
 
@@ -139,3 +151,20 @@ class ManpaSeleniumWebDriver:
 
     def __exit__(self, type, value, traceback):
         self.quit()
+
+
+class ManpaSeleniumWebElement:
+
+    def __init__(self, elem):
+        self._elem = elem
+
+    def mark_identified(self):
+        # FIXME
+        return
+
+    def mark_error(self, message):
+        # FIXME
+        return
+
+    def __getattr__(self, attr):
+        return getattr(self._elem, attr)
