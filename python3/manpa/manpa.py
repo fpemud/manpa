@@ -107,17 +107,20 @@ class Manpa:
         self._height = None
         self._width = None
 
-    def hasBeenIntercepted(self):
-        return self._intercepted
-
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, traceback):
         self.dispose()
 
+    def has_been_intercepted(self):
+        return self._intercepted
+
     def open_http_client(self):
         return None
 
     def open_selenium_client(self):
         return ManpaSeleniumWebDriver(self)
+
+    def download_files(self, url, filename):
+        pass
