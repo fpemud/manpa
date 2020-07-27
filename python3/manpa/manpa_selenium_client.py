@@ -54,6 +54,9 @@ class ManpaSeleniumWebDriver:
             if True:
                 options = selenium.webdriver.chrome.options.Options()
                 options.add_argument('--no-sandbox')                    # FIXME
+                options.add_argument('--ignore-ssl-error=yes')
+                options.add_argument('--ignore-certificate-errors')
+                # options.add_argument('--disable-popup-blocking')      # FIXME
                 if ua is not None:
                     options.add_argument('user-agent=' + ua)
                 # options.add_argument('--proxy-server=http://ip:port')
